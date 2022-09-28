@@ -11,7 +11,7 @@ import pandas as pd
 
 class Dataset:
     
-    def __init__(self, X:np.ndarray = None, y:np.ndarray = None, features:List = None, label:List = None):
+    def __init__(self, X:np.ndarray = None, y:np.ndarray = None, features:List = None, label:str = None):
         """Dataset implementation from scratch"""
         
         self.X = X
@@ -27,7 +27,10 @@ class Dataset:
     def has_label(self):
         """Returns True if dataset has labels"""
         
-        return self.y is not None
+        if self.y is not None:
+            return True
+        else:
+            return False
     
     def get_classes(self) -> List[int]:
         """Return the label classes as a list"""
@@ -77,7 +80,8 @@ if __name__ == "__main__":
     label = "y"
     a = Dataset(X=x, y=y, features=features, label=label)
     b = Dataset()
+    c = Dataset(X=x, y=y, features=features, label=None)
     #print(a.get_shape())
-    #print(a.has_label())
+    print(c.has_label())
     #print(a.get_classes())
-    print(a.print_dataframe())
+    print(c.print_dataframe())

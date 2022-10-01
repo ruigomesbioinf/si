@@ -60,7 +60,7 @@ def write_csv(dataset, filename: str, sep: str = ",", features: Optional[bool] =
     if label:
         csv.insert(loc=0, column=dataset.label, value=dataset.y)
         
-    csv.to_csv(filename, index=False)
+    csv.to_csv(filename, sep = sep, index=False)
     
     
 if __name__ == "__main__":

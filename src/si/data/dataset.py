@@ -70,7 +70,7 @@ class Dataset:
         )
         
     def print_dataframe(self):
-        return pd.DataFrame(self.X, self.y, self.features)
+        return pd.DataFrame(self.X, columns=self.features, index=self.y)
     
     
 if __name__ == "__main__":

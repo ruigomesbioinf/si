@@ -61,6 +61,7 @@ class Dataset:
         return np.max(self.X, axis=0)
     
     def summary(self):
+        """Return summarized statistics about the dataset."""
         return pd.DataFrame(
             {"mean": self.get_mean(),
              "median": self.get_median(),
@@ -69,7 +70,23 @@ class Dataset:
              "max": self.get_max()}
         )
         
+    def dropna (self):
+        """Class method that removes samples with atleast one null (NaN) value."""
+        
+        return pd.DataFrame(self.X).dropna(axis=0).reset_index(drop=True)
+    
+    def fillna(self, value: int):
+        """Class method that fills all NaN values with the given value
+
+        Args:
+            value (int): Given value to replace null values with
+        """
+        
+        return pd.DataFrame(self.X).fillna(value)
+    
     def print_dataframe(self):
+        """Prints dataframe in pandas DataFrame format
+        """
         return pd.DataFrame(self.X, columns=self.features, index=self.y)
     
     

@@ -5,11 +5,10 @@
 # ---------------------------
 
 import sys
-from typing import Optional, Union
-from matplotlib import dates
-sys.path.insert(0, '/home/rui/Desktop/SIB/si/src/si')
+sys.path.insert(0, 'src/si')
 
 import numpy as np
+from typing import Optional, Union
 
 from data.dataset import Dataset
 

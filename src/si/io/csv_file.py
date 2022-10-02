@@ -5,7 +5,9 @@
 # ---------------------------
 
 import sys
-sys.path.insert(0, '/home/rui/Desktop/SIB/si/src/si')
+sys.path.insert(0, 'src/si')
+
+print(sys.path)
 
 from typing import Optional, Union
 import pandas as pd
@@ -76,3 +78,4 @@ if __name__ == "__main__":
     a = read_csv(filename=file, sep = ",", features=True, label=4)
     # print(a.dropna())
     print(a.fillna(100))
+    

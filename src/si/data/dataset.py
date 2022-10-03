@@ -81,7 +81,8 @@ class Dataset:
         Args:
             value (int): Given value to replace null values with
         """
-        
+        # corrigir sem utilizar fill na e drop na do pandas
+        # criar uma mask onde X é == NaN e depois new_mask = x[mask]
         return pd.DataFrame(self.X).fillna(value)
     
     def print_dataframe(self):

@@ -15,7 +15,7 @@ import numpy as np
 
 from data.dataset import Dataset
 
-def read_csv(filename:str, sep:str = ",", features: Optional[bool] = True, label: Union[None, int]= None):
+def read_csv(filename:str, sep:str = ",", features: Optional[bool] = True, label: Union[None, int]= None) -> Dataset:
     """Function that reads csv file and returns a Dataset object of that file.
 
     Args:
@@ -23,6 +23,9 @@ def read_csv(filename:str, sep:str = ",", features: Optional[bool] = True, label
         sep (str): separator between values. Defaults to , .
         features (Optional[bool], optional): If the csv file has feature names. Defaults to True.
         label (int): If the dataset has defined labels receives an integer value that tells the column of the labels. Defaults to None.
+
+    Returns:
+        Dataset: The dataset object
     """
     imported_data = pd.read_csv(filepath_or_buffer=filename, sep=sep)
     data = imported_data.values.tolist()
@@ -44,7 +47,7 @@ def read_csv(filename:str, sep:str = ",", features: Optional[bool] = True, label
     return Dataset(X=data, y=y, features = headers, label = header_label)
         
     
-def write_csv(dataset, filename: str, sep: str = ",", features: Optional[bool] = True, label: Optional[bool] = True):
+def write_csv(dataset: Dataset, filename: str, sep: str = ",", features: Optional[bool] = True, label: Optional[bool] = True) -> None:
     """Writes a csv file from a dataset object
 
     Args:
@@ -61,6 +64,7 @@ def write_csv(dataset, filename: str, sep: str = ",", features: Optional[bool] =
     
     if label:
         csv.insert(loc=0, column=dataset.label, value=dataset.y)
+        # csv[dataset.label] = dataset.y
         
     csv.to_csv(filename, sep = sep, index=False)
     
@@ -77,5 +81,5 @@ if __name__ == "__main__":
     file = r"/home/rui/Desktop/SIB/si/datasets/iris_missing_data.csv"
     a = read_csv(filename=file, sep = ",", features=True, label=4)
     # print(a.dropna())
-    print(a.fillna(100))
+    # print(a.fillna(100))
     

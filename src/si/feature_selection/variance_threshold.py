@@ -27,7 +27,7 @@ class VarianceThreshold:
         self.threshold = threshold
         self.variance = None
         
-    def fit(self, dataset):
+    def fit(self, dataset: Dataset):
         """Estimates/calculate the variance of each feature in a dataset.
 
         Args:
@@ -38,7 +38,7 @@ class VarianceThreshold:
         self.variance = variance
         return self
     
-    def transform(self, dataset):
+    def transform(self, dataset: Dataset) -> Dataset:
         """Selects all the features with variance higher than the threshold and returns a new dataset 
         with the selected features
 
@@ -52,6 +52,14 @@ class VarianceThreshold:
         features = np.array(dataset.features)[features_mask]
         return Dataset(X=X, y=dataset.y, features=list(features), label=None)
         
+    def fit_transform(self, dataset: Dataset) -> None:
+        """Pre-processing method to run the fit and transform methods automatically by the user.
+
+        Args:
+            dataset (Dataset): Dataset object.
+        """
+        self.fit(dataset)
+        self.transform(dataset)
         
 
 if __name__ == "__main__":
@@ -60,9 +68,11 @@ if __name__ == "__main__":
                       features=["A", "B", "C"],
                       label="class")
     a = VarianceThreshold(0)
-    a.fit(dataset=dataset)
-    print(a.variance)
-    print(a.threshold)
-    b = a.transform(dataset)
-    print(b.print_dataframe())
+    # a.fit(dataset=dataset)
+    # print(a.variance)
+    # print(a.threshold)
+    # b = a.transform(dataset)
+    # print(b.print_dataframe())
+    a.fit_transform(dataset)
+
     

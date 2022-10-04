@@ -15,11 +15,12 @@ import pandas as pd
 
 class VarianceThreshold:
     
-    def __init__(self, threshold: int) -> None:
-        """_summary_
+    def __init__(self, threshold: int = 0) -> None:
+        """ The variance threshold represents a baseline approach for feature selection.
+            It removes all features which variance doesn't meet a threshold given by the user.
 
         Args:
-            threshold (int): Non negative threshold given by the user.
+            threshold (int): Non negative threshold given by the user. Defaults to 0.
         """
         if threshold < 0:
             warnings.warn("Your threshold must be a non-negative integer.")
@@ -32,7 +33,7 @@ class VarianceThreshold:
         Args:
             dataset (_type_): dataset object
         """
-        X = dataset.X
+        X = dataset
         variance = X.get_variance()
         self.variance = variance
         return self
@@ -54,6 +55,14 @@ class VarianceThreshold:
         
 
 if __name__ == "__main__":
-    dataset = Dataset(X= np.array([1, 2, 3],
-                                  [4, 5, 6],
-                                  [7, 8, 9]))
+    dataset = Dataset(X= np.array([[1, 4, 12], [1, 1, 1], [1, 1, 1]]),
+                      y = np.array([1, 2, 3]),
+                      features=["A", "B", "C"],
+                      label="class")
+    a = VarianceThreshold(0)
+    a.fit(dataset=dataset)
+    print(a.variance)
+    print(a.threshold)
+    b = a.transform(dataset)
+    print(b.print_dataframe())
+    

@@ -8,26 +8,25 @@ import sys
 sys.path.insert(0, 'src/si')
 # print(sys.path)
 
-import warnings
 from data.dataset import Dataset
 import numpy as np
 import pandas as pd
 
 class VarianceThreshold:
     
-    def __init__(self, threshold: int = 0) -> None:
+    def __init__(self, threshold: float = 0.0) -> None:
         """ The variance threshold represents a baseline approach for feature selection.
             It removes all features which variance doesn't meet a threshold given by the user.
 
         Args:
-            threshold (int): Non negative threshold given by the user. Defaults to 0.
+            threshold (float): Non negative threshold given by the user. Defaults to 0.
         """
         if threshold < 0:
-            warnings.warn("Your threshold must be a non-negative integer.")
+            raise ValueError("Your threshold must be a non-negative integer.")
         self.threshold = threshold
         self.variance = None
         
-    def fit(self, dataset: Dataset):
+    def fit(self, dataset: Dataset) -> "VarianceThreshold":
         """Estimates/calculate the variance of each feature in a dataset.
 
         Args:
@@ -59,20 +58,24 @@ class VarianceThreshold:
             dataset (Dataset): Dataset object.
         """
         self.fit(dataset)
-        self.transform(dataset)
+        return self.transform(dataset)
         
 
-if __name__ == "__main__":
-    dataset = Dataset(X= np.array([[1, 4, 12], [1, 1, 1], [1, 1, 1]]),
-                      y = np.array([1, 2, 3]),
-                      features=["A", "B", "C"],
-                      label="class")
-    a = VarianceThreshold(0)
-    # a.fit(dataset=dataset)
-    # print(a.variance)
-    # print(a.threshold)
-    # b = a.transform(dataset)
-    # print(b.print_dataframe())
-    a.fit_transform(dataset)
+if __name__ == '__main__':
+    dataset = Dataset(X=np.array([[0, 2, 0, 3],
+                                  [0, 1, 4, 3],
+                                  [0, 1, 1, 3]]),
+                      y=np.array([0, 1, 0]),
+                      features=["f1", "f2", "f3", "f4"],
+                      label="y")
 
+    # a = VarianceThreshold()
+    # a = a.fit(dataset)
+    # dataset = a.transform(dataset)
+    # print(dataset.features)
+
+    b = VarianceThreshold()
+    b = b.fit_transform(dataset)
+    # print(b.print_dataframe())
+    print(b.features)
     

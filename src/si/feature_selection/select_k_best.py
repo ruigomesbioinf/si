@@ -14,7 +14,7 @@ import numpy as np
 
 # imports necessários do package
 from data.dataset import Dataset
-from si.statistics.f_classification import f_classification
+from statistic.f_classification import f_classification
 
 class SelectKBest:
     
@@ -69,4 +69,15 @@ class SelectKBest:
         self.fit(dataset)
         return self.transform(dataset)
     
-    
+
+if __name__ == "__main__":
+    a = SelectKBest(k = 3)
+    dataset = Dataset(X=np.array([[0, 2, 0, 3],
+                                  [0, 1, 4, 3],
+                                  [0, 1, 1, 3]]),
+                      y=np.array([0, 1, 0]),
+                      features=["f1", "f2", "f3", "f4"],
+                      label="y")
+    a.fit(dataset)
+    b = a.transform(dataset)
+    print(b.features) 

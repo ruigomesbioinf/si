@@ -85,7 +85,7 @@ if __name__ == "__main__":
                       y=np.array([0, 1, 0]),
                       features=["f1", "f2", "f3", "f4"],
                       label="y")
-    a.fit(dataset)
-    b = a.transform(dataset)
-    print(b.features)  
+    a = a.fit_transform(dataset)
+    print(dataset.features)
+    print(a.features)  
     

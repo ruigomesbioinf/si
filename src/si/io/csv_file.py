@@ -69,6 +69,7 @@ def write_csv(dataset: Dataset, filename: str, sep: str = ",", features: Optiona
     
     
 if __name__ == "__main__":
+    pass
     # TESTING
     # file = r"/home/rui/Desktop/SIB/si/datasets/iris.csv"
     # a = read_csv(filename=file, sep = ",", features=True, label=4)
@@ -77,8 +78,7 @@ if __name__ == "__main__":
     # write_csv(a, "csv_write_test1.csv", features=True, label=False)
     
     # TESTING MISSING VALUES METHODS ON DATASET CLASS
-    file = r"/home/rui/Desktop/SIB/si/datasets/iris_missing_data.csv"
-    a = read_csv(filename=file, sep = ",", features=True, label=4)
+    # file = r"/home/rui/Desktop/SIB/si/datasets/iris_missing_data.csv"
+    # a = read_csv(filename=file, sep = ",", features=True, label=4)
     # print(a.dropna())
     # print(a.fillna(100))
-    

@@ -16,6 +16,13 @@ import numpy as np
 class KMeans:
     
     def __init__(self, k: int, max_iter: int = 1000, distance: Callable = euclidean_distance) -> None:
+        """K-means clustering algorithm.
+
+        Args:
+            k (int): Number of clusters
+            max_iter (int, optional): Maximum number of iterations. Defaults to 1000.
+            distance (Callable, optional): Euclidean distance function for statistics measures. Defaults to euclidean_distance.
+        """
         
         # parameters
         self.k = k
@@ -27,7 +34,11 @@ class KMeans:
         self.labels = None
         
     def _init_centroids(self, dataset: Dataset):
-        
+        """It generates an initial k number of centroids.
+
+        Args:
+            dataset (Dataset): Dataset object
+        """
         seeds = np.random.permutation(dataset.get_shape()[0])[:self.k]
         self.centroids = dataset.X[seeds]
     
@@ -45,9 +56,18 @@ class KMeans:
         return closest_index
     
     
-    def _dar_nome(self, dataset: Dataset):
-        
-        
+    def fit(self, dataset: Dataset) -> "KMeans":
+        """
+        It fits k-means clustering on the dataset.
+        This algorithm initializes k number of centroids and then updates them iteractively until theres is no more diference between iterations
+        or until max_iter has been achieved.
+
+        Args:
+            dataset (Dataset): Dataset object
+
+        Returns:
+            KMeans: KMeans object
+        """
         difference = False # variable to check differences between 
         i = 0 # variable to check max_iter
         labels = np.zeros(dataset.get_shape()[0]) #initialize array with zeros for labels
@@ -63,21 +83,51 @@ class KMeans:
             self.centroids =np.array(centroids)
             
             # check if centroids had changed
-            difference = np.any(labels != new_labels)
+            difference = np.any(new_labels != labels)
             labels = new_labels
             
             i += 1
         self.labels = labels
         return self
     
-    def _get_distances(self, sample: np.ndarray):
+    def _get_distances(self, sample: np.ndarray) -> np.ndarray:
+        """
+        It computes the distance between each sample and the closest centroid
+
+        Args:
+            sample (np.ndarray): Sample of centroids
+
+        Returns:
+            np.ndarray: Distances between each sample and the closest centroid
+        """
         return self.distance(sample, self.centroids)
     
     
-    def transform(self):
-        
+    def transform(self, dataset: Dataset) -> np.ndarray:
+        """
+        It transforms the dataset and then computes the distance between each sample and the closest centroid.
+
+        Args:
+            dataset (Dataset): Dataset object.
+
+        Returns:
+            np.ndarray: Transformed dataset.
+        """
         centroid_distances = np.apply_along_axis(self._get_distances, axis = 1, arr = dataset.X)
         return centroid_distances
+    
+    def fit_transform(self, dataset: Dataset) -> np.ndarray:
+        """
+        It fits and transforms the dataset with the methods previously
+
+        Args:
+            dataset (Dataset): Dataset object  
+
+        Returns:
+            np.ndarray: Transformed dataset
+        """
+        self.fit(dataset)
+        return self.transform(dataset)
     
     def predict(self, dataset: Dataset) -> np.ndarray:
         """It predicts the labels of the dataset.

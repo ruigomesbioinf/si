@@ -6,7 +6,7 @@
 
 import sys
 sys.path.insert(0, 'src/si')
-print(sys.path)
+# print(sys.path)
 
 from typing import Optional, Union
 import pandas as pd

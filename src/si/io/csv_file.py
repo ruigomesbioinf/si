@@ -8,42 +8,40 @@ import sys
 sys.path.insert(0, 'src/si')
 # print(sys.path)
 
-from typing import Optional, Union
+from typing import Optional
 import pandas as pd
 import numpy as np
 
 from data.dataset import Dataset
 
-def read_csv(filename:str, sep:str = ",", features: Optional[bool] = True, label: Union[None, int]= None) -> Dataset:
+def read_csv(filename:str, sep:str = ",", features: Optional[bool] = True, label: Optional[bool] = False) -> Dataset:
     """Function that reads csv file and returns a Dataset object of that file.
 
     Args:
         filename (str): name/path of file
         sep (str): separator between values. Defaults to , .
         features (Optional[bool], optional): If the csv file has feature names. Defaults to True.
-        label (int): If the dataset has defined labels receives an integer value that tells the column of the labels. Defaults to None.
-
+        label (int): If the dataset has defined labels. Defaults to False
     Returns:
         Dataset: The dataset object
     """
-    imported_data = pd.read_csv(filepath_or_buffer=filename, sep=sep)
-    data = imported_data.values.tolist()
-    headers = list(imported_data.columns)
-    header_label = headers[label]
-    
+    data = pd.read_csv(filename, sep=sep)
+
     if features:
-        if label is not None:
-            del headers[label]
+        features_dataframe = data.iloc[:, :-1].to_numpy()
+        features_names = data.columns[:-1].tolist()
     else:
-        headers = None
-    
-    if label is not None:
-        y = list(imported_data.iloc[:, label])
-        imported_data = imported_data.drop(imported_data.columns[label], axis=1)
-        data = imported_data.values.tolist()
-    else: y = None
-    
-    return Dataset(X=data, y=y, features = headers, label = header_label)
+        features_dataframe = None
+        features_names = None
+
+    if label:
+        y = data.iloc[:, -1].to_numpy()
+        label_name = data.columns[-1]
+    else:
+        y = None
+        label_name = None
+
+    return Dataset(features_dataframe, y, features_names, label_name)
         
     
 def write_csv(dataset: Dataset, filename: str, sep: str = ",", features: Optional[bool] = True, label: Optional[bool] = True) -> None:

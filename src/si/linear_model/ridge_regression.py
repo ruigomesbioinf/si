@@ -1,9 +1,8 @@
 import numpy as np
-
-
+import matplotlib.pyplot as plt
 import sys
 sys.path.insert(0, 'src/si')
-print(sys.path)
+# print(sys.path)
 
 from data.dataset import Dataset
 from metrics.mse import mse
@@ -52,6 +51,7 @@ class RidgeRegression:
         # attributes
         self.theta = None
         self.theta_zero = None
+        self.cost_history = {}
 
     def fit(self, dataset: Dataset) -> 'RidgeRegression':
         """
@@ -67,7 +67,7 @@ class RidgeRegression:
         self: RidgeRegression
             The fitted model
         """
-        m, n = dataset.shape()
+        m, n = dataset.get_shape()
 
         # initialize the model parameters
         self.theta = np.zeros(n)
@@ -75,6 +75,9 @@ class RidgeRegression:
 
         # gradient descent
         for i in range(self.max_iter):
+            # computes cost and updates cost_history
+            self.cost_history[i] = self.cost(dataset=dataset)
+            
             # predicted y
             y_pred = np.dot(dataset.X, self.theta) + self.theta_zero
 
@@ -140,31 +143,10 @@ class RidgeRegression:
         y_pred = self.predict(dataset)
         return (np.sum((y_pred - dataset.y) ** 2) + (self.l2_penalty * np.sum(self.theta ** 2))) / (2 * len(dataset.y))
 
+    def plot_cost_history(self):
+        
+        plt.plot(self.cost_history.keys(), self.cost_history.values())
+        plt.xlabel("Iteration")
+        plt.ylabel("Cost")
+        plt.show()        
 
-if __name__ == '__main__':
-    # import dataset
-    from data.dataset import Dataset
-
-    # make a linear dataset
-    X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
-    y = np.dot(X, np.array([1, 2])) + 3
-    dataset_ = Dataset(X=X, y=y)
-
-    # fit the model
-    model = RidgeRegression()
-    model.fit(dataset_)
-
-    # get coefs
-    print(f"Parameters: {model.theta}")
-
-    # compute the score
-    score = model.score(dataset_)
-    print(f"Score: {score}")
-
-    # compute the cost
-    cost = model.cost(dataset_)
-    print(f"Cost: {cost}")
-
-    # predict
-    y_pred_ = model.predict(Dataset(X=np.array([[3, 5]])))
-    print(f"Predictions: {y_pred_}")

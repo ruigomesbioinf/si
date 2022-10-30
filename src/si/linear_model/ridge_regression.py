@@ -72,25 +72,29 @@ class RidgeRegression:
         # initialize the model parameters
         self.theta = np.zeros(n)
         self.theta_zero = 0
-
+        
+        
+        threshold = 1
         # gradient descent
         for i in range(self.max_iter):
             # computes cost and updates cost_history
             self.cost_history[i] = self.cost(dataset=dataset)
-            
-            # predicted y
-            y_pred = np.dot(dataset.X, self.theta) + self.theta_zero
+                
+            if i > 1 and (self.cost_history[i - 1] - self.cost_history[i] < threshold):
+                break
+            else:
+                # predicted y
+                y_pred = np.dot(dataset.X, self.theta) + self.theta_zero
 
-            # computing and updating the gradient with the learning rate
-            gradient = (self.alpha * (1 / m)) * np.dot(y_pred - dataset.y, dataset.X)
+                # computing and updating the gradient with the learning rate
+                gradient = (self.alpha * (1 / m)) * np.dot(y_pred - dataset.y, dataset.X)
 
-            # computing the penalty
-            penalization_term = self.alpha * (self.l2_penalty / m) * self.theta
+                # computing the penalty
+                penalization_term = self.alpha * (self.l2_penalty / m) * self.theta
 
-            # updating the model parameters
-            self.theta = self.theta - gradient - penalization_term
-            self.theta_zero = self.theta_zero - (self.alpha * (1 / m)) * np.sum(y_pred - dataset.y)
-
+                # updating the model parameters
+                self.theta = self.theta - gradient - penalization_term
+                self.theta_zero = self.theta_zero - (self.alpha * (1 / m)) * np.sum(y_pred - dataset.y)
         return self
 
     def predict(self, dataset: Dataset) -> np.array:
@@ -144,8 +148,10 @@ class RidgeRegression:
         return (np.sum((y_pred - dataset.y) ** 2) + (self.l2_penalty * np.sum(self.theta ** 2))) / (2 * len(dataset.y))
 
     def plot_cost_history(self):
-        
-        plt.plot(self.cost_history.keys(), self.cost_history.values())
+        """
+        Plots the cost history using matplotlib with x axis as number of iterations and y axis as cost value.
+        """
+        plt.plot(self.cost_history.keys(), self.cost_history.values(), "-k")
         plt.xlabel("Iteration")
         plt.ylabel("Cost")
         plt.show()        

@@ -34,18 +34,20 @@ class KNNClassifier:
         return self
     
     def _get_closest_label(self, sample):
-        # compute the distance between the sample and the dataset
+        # Calculates the distance between the samples and the dataset
         distances = self.distance(sample, self.dataset.X)
 
-        # get the k nearest neighbors
-        k_nearest_neighbors = np.argsort(distances)[:self.k]
+        # Sort the distances and get indexes
+        knn = np.argsort(distances)[:self.k]  # get the first k indexes of the sorted distances array
+        knn_labels = self.dataset.y[knn]
 
-        # get the labels of the k nearest neighbors
-        k_nearest_neighbors_labels = self.dataset.y[k_nearest_neighbors]
+        # Returns the unique classes and the number of occurrences from the matching classes
+        labels, counts = np.unique(knn_labels, return_counts=True)
 
-        # get the most common label
-        labels, counts = np.unique(k_nearest_neighbors_labels, return_counts=True)
-        return labels[np.argmax(counts)]
+        # Gets the most frequent class
+        high_freq_lab = labels[np.argmax(counts)]  # get the indexes of the classes with the highest frequency/count
+
+        return high_freq_lab
     
     def predict(self, dataset: Dataset):
         return np.apply_along_axis(self._get_closest_label, axis=1, arr=dataset.X)        

@@ -23,5 +23,6 @@ def euclidean_distance(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     Returns:
         np.ndarray: Euclidean distance for each point in y.
     """
-    distance = np.sqrt(((x - y) ** 2).sum(axis=1))
+    distance = np.sqrt(np.sum((x - y) ** 2, axis=1))
+
     return distance

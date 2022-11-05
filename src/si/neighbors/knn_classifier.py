@@ -34,18 +34,22 @@ class KNNClassifier:
         return self
     
     def _get_closest_label(self, sample):
-        
-        distances = self.distance(sample, self.dataset)
-        
-        k_nearest_neighbor = np.argsort(distances)[:self.k]
-        k_nearest_neighbor_label = self.dataset.y[k_nearest_neighbor]
-        labels, counts = np.unique(k_nearest_neighbor, k_nearest_neighbor_label, return_counts=True)
-        
+        # compute the distance between the sample and the dataset
+        distances = self.distance(sample, self.dataset.X)
+
+        # get the k nearest neighbors
+        k_nearest_neighbors = np.argsort(distances)[:self.k]
+
+        # get the labels of the k nearest neighbors
+        k_nearest_neighbors_labels = self.dataset.y[k_nearest_neighbors]
+
+        # get the most common label
+        labels, counts = np.unique(k_nearest_neighbors_labels, return_counts=True)
         return labels[np.argmax(counts)]
     
     def predict(self, dataset: Dataset):
-        np.apply_along_axis(self._get_closest_label, axis=1, arr=dataset.X)
-        
+        return np.apply_along_axis(self._get_closest_label, axis=1, arr=dataset.X)        
+    
     def score(self, dataset: Dataset) -> float:
         prediction = self.predict(dataset)
         return accuracy(dataset.y, prediction)

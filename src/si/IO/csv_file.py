@@ -25,23 +25,27 @@ def read_csv(filename:str, sep:str = ",", features: Optional[bool] = True, label
     Returns:
         Dataset: The dataset object
     """
-    data = pd.read_csv(filename, sep=sep)
+    data = pd.read_csv(filename, sep)
+    if features and label: 
+        y = data.iloc[:, -1] 
+        label = data.columns[-1]
+        data = data.iloc[:, :-1]
+        features = data.columns
 
-    if features:
-        features_dataframe = data.iloc[:, :-1].to_numpy()
-        features_names = data.columns[:-1].tolist()
-    else:
-        features_dataframe = None
-        features_names = None
-
-    if label:
-        y = data.iloc[:, -1].to_numpy()
-        label_name = data.columns[-1]
-    else:
+    elif features and label is False:  
+        features = data.columns
         y = None
-        label_name = None
 
-    return Dataset(features_dataframe, y, features_names, label_name)
+    elif features is False and label:  
+        y = data.iloc[:, -1]
+        label = data.columns[-1]
+        data = data.iloc[:, :-1]
+
+    else: 
+        y = None
+
+    return Dataset(data, y, features, label)
+
         
     
 def write_csv(dataset: Dataset, filename: str, sep: str = ",", features: Optional[bool] = True, label: Optional[bool] = True) -> None:

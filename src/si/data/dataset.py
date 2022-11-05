@@ -89,17 +89,3 @@ class Dataset:
         """Prints dataframe in pandas DataFrame format
         """
         return pd.DataFrame(self.X, columns=self.features, index=self.y)
-    
-    
-if __name__ == "__main__":
-    x = np.array([[1, 2, 8], [1, 2, 7]])
-    y = np.array([1, 2])
-    features = ["A", "B", "C"]
-    label = "y"
-    a = Dataset(X=x, y=y, features=features, label=label)
-    b = Dataset()
-    c = Dataset(X=x, y=y, features=features, label=None)
-    #print(a.get_shape())
-    print(c.has_label())
-    #print(a.get_classes())
-    print(c.print_dataframe())

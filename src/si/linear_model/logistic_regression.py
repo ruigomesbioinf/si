@@ -54,7 +54,7 @@ class LogisticRegression:
         threshold = 0.0001
         
         # gradient descent
-        for i in range(self.max_iter):
+        for i in range(int(self.max_iter)):
             # computes the cost history and updates it with iteration and cost
             self.cost_history[i] = self.cost(dataset=dataset)
             

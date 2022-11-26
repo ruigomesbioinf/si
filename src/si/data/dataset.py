@@ -88,4 +88,7 @@ class Dataset:
     def print_dataframe(self):
         """Prints dataframe in pandas DataFrame format
         """
+        if self.X is None:
+            return
+
         return pd.DataFrame(self.X, columns=self.features, index=self.y)

@@ -20,7 +20,7 @@ class SigmoidActivation:
         self.input_data = input_data
         return sigmoid_function(input_data)
     
-    def backward(self, error: np.ndarray) -> np.ndarray:
+    def backward(self, error: np.ndarray, learning_rate: float) -> np.ndarray:
         """
         Computes the backward pass of the layer.
 

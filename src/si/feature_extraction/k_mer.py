@@ -36,13 +36,14 @@ class KMer:
         kmer_count = {k_mer: 0 for k_mer in self.k_mers}
 
         for i in range(len(sequence)-self.k +1):
-            kmer_count[sequence[i:i+self.k]]+= 1
+            k_mer = sequence[i:i + self.k]
+            kmer_count[k_mer] += 1
 
         return np.array([kmer_count[k_mer]/len(sequence) for k_mer in self.k_mers])
 
 
     def transform(self, dataset: Dataset):
-        sequences_kmer = [self._get_kmer(seq) for seq in dataset.X.iloc[:, 0]]
+        sequences_kmer = [self._get_kmer(seq) for seq in dataset.X[:, 0]]
         sequences_kmer = np.array(sequences_kmer)
 
         return Dataset(X=sequences_kmer, y=dataset.y, features=self.k_mers, label=dataset.label)

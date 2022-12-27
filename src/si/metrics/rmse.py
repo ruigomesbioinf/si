@@ -6,6 +6,7 @@
 
 import sys
 import numpy as np
+from cmath import sqrt
 sys.path.insert(0, 'src/si')
 # print(sys.path)
 
@@ -20,4 +21,6 @@ def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     Returns:
         float: RMSE between real and predicted values
     """
-    return np.sqrt(((y_true - y_pred) ** 2).mean())
+    rmse = sqrt(np.sum((y_true - y_pred) ** 2) / len(y_true))
+
+    return rmse

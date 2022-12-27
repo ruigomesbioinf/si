@@ -33,7 +33,7 @@ class KNNRegressor:
     
     def _get_closest_label(self, sample):
         
-        distances = self.distance(sample, self.dataset)
+        distances = self.distance(sample, self.dataset.X)
         
         k_nearest_neighbor = np.argsort(distances)[:self.k]
         k_nearest_neighbor_label = self.dataset.y[k_nearest_neighbor]

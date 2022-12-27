@@ -73,7 +73,13 @@ class Dataset:
     def dropna (self):
         """Class method that removes samples with atleast one null (NaN) value."""
         
-        return pd.DataFrame(self.X).dropna(axis=0).reset_index(drop=True)
+        if self.X is None:
+            return
+        
+        self.X = self.X[~np.isnan(self.X).any(axis=1)]
+        
+    
+        return Dataset(self.X, self.y, self.features, self.label)
     
     def fillna(self, value: int):
         """Class method that fills all NaN values with the given value
@@ -81,9 +87,14 @@ class Dataset:
         Args:
             value (int): Given value to replace null values with
         """
-        # corrigir sem utilizar fill na e drop na do pandas
-        # criar uma mask onde X é == NaN e depois new_mask = x[mask]
-        return pd.DataFrame(self.X).fillna(value)
+        
+        if self.X is None:
+            return
+        
+        self.X = np.where(pd.isnull(self.X), value, self.X)
+        
+        return Dataset(self.X, self.y, self.features, self.label)
+        
     
     def print_dataframe(self):
         """Prints dataframe in pandas DataFrame format

@@ -120,7 +120,7 @@ class NN:
             float: The score of our model
         """
         y_pred = self.predict(dataset)
-        return accuracy(dataset.y, y_pred)
+        return scoring_function(dataset.y, y_pred)
 
 
                 

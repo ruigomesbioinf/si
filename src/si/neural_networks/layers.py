@@ -19,7 +19,7 @@ class Dense:
         self.output_size = output_size
         
         # attributes
-        self.x = None
+        self.X = None
         self.weights = np.random.randn(input_size, output_size) * 0.01
         self.bias = np.zeros((1, output_size))
         
@@ -30,8 +30,9 @@ class Dense:
         Args:
             X (np.ndarray): The input to the layer.
         """
-        self.x = X
-        
+        self.X = X
+        print(X.shape)
+        print(self.weights.shape)
         return np.dot(X, self.weights) + self.bias # our input_data needs to be a matrix with columns == features, to multiply these two matrixes the number of columns of input_data == number of rows of weights
     
     def backward(self, error: np.ndarray, learning_rate: float = 0.01):
@@ -46,13 +47,9 @@ class Dense:
         error_to_propagate = np.dot(error, self.weights.T)
         
         # update weights and bias
-        self.weights -= learning_rate * np.dot(self.x.T, error) # due to matrix multiplication rules x.T is used
+        self.weights -= learning_rate * np.dot(self.X.T, error) # due to matrix multiplication rules x.T is used
         
         self.bias -= learning_rate * np.sum(error, axis = 0) # sum because bias has the dimensions of nodes and error has the dimensions of samples + nodes
         
         return error_to_propagate
-    
-    
-
-        
     

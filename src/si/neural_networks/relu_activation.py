@@ -18,7 +18,7 @@ class ReLUActivation:
         """
         self.input_data = input_data
         
-        return np.maximum(0, input_data) # 0 arg to avoi negative values
+        return np.maximum(0, input_data) 
     
     def backward(self, error: np.ndarray, learning_rate: float) -> np.ndarray:
         """

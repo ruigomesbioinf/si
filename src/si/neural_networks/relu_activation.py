@@ -20,12 +20,13 @@ class ReLUActivation:
         
         return np.maximum(0, input_data) # 0 arg to avoi negative values
     
-    def backward(self, error: np.ndarray) -> np.ndarray:
+    def backward(self, error: np.ndarray, learning_rate: float) -> np.ndarray:
         """
         Computes teh backward pass of the rectified linear unit relationshop.
 
         Args:
             error (np.ndarray): Error
+            learning_rate(float): Learning rate
 
         Returns:
             np.ndarray: Error of the previous layer.

@@ -31,8 +31,6 @@ class Dense:
             X (np.ndarray): The input to the layer.
         """
         self.X = X
-        print(X.shape)
-        print(self.weights.shape)
         return np.dot(X, self.weights) + self.bias # our input_data needs to be a matrix with columns == features, to multiply these two matrixes the number of columns of input_data == number of rows of weights
     
     def backward(self, error: np.ndarray, learning_rate: float = 0.01):

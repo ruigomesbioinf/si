@@ -36,7 +36,7 @@ class NN:
         self.layers = layers
         self.epochs = epochs
         self.learning_rate = learning_rate
-        self.loss = loss
+        self.loss_function = loss
         self.loss_derivative = loss_derivative
         self.verbose = verbose
         
@@ -54,21 +54,22 @@ class NN:
         Returns:
             NN: Fitted model
         """
-        X = dataset.X
-        y = dataset.y
         
         for epoch in range(1, self.epochs + 1):
+            y_pred = dataset.X
+            y_true = np.reshape(dataset.y, (-1, 1))
+            
             # forward propagation
             for layer in self.layers:
-                X = layer.forward(X)
+                y_pred = layer.forward(y_pred)
                 
             # backward propagation
-            error = self.loss_derivative(y, X)
+            error = self.loss_derivative(y_true, y_pred)
             for layer in self.layers[::-1]:
                 error = layer.backward(error, self.learning_rate)
                 
             # save history
-            cost = self.loss(y, X)
+            cost = self.loss_function(y_true, y_pred)
             self.history[epoch] = cost
             
             # print loss if verbose = True
@@ -106,7 +107,7 @@ class NN:
             float: The cost of the model
         """
         y_pred = self.predict(dataset)
-        return self.loss(dataset.y, y_pred)
+        return self.loss_function(dataset.y, y_pred)
     
     def score(self, dataset: Dataset, scoring_function: Callable = accuracy) -> float:
         """
